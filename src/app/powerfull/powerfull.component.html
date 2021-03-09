@@ -1,0 +1,12 @@
+<div id="powefull-component">
+    {{teste}}
+    <a routerLink="/heroes/powerfull">
+        <button (click)="getPowerfull()">Get powerfull</button>
+        <a *ngIf="hero">
+            <h2>{{hero.name | uppercase}}</h2>
+            <div><span>id: </span>{{hero.id}}</div>
+            <div><span>power: </span>{{hero.power}}</div>
+            <div><span>agility: </span>{{hero.agility}}</div>
+        </a>
+    </a>
+</div>
