@@ -8,15 +8,14 @@
       <input id="team-name" [(ngModel)]="team.name" placeholder="Team name"/>
     </div>
     <!-- Mostrar todos herois que estão nesse time  -->
+    <li *ngFor="let hero of heroes">
+        <a routerLink="/detail/{{hero.id}}">
+          <span class="badge">{{hero.id}}</span> {{hero.name}}
+        </a>
+    </li>
     
-    <!--<div class="heroes-menu">
-            <a *ngFor="let hero of heroes"
-                routerLink="/detail/{{hero.id}}">
-                {{hero.name}}
-                </a>
-        </div> -->
     <button (click)="goBack()">go back</button>
     <button (click)="saveTeam()">save</button>
     <button class="delete" title="delete team"
     (click)="deleteTeam(team)">delete</button>
-  </div>
+</div>

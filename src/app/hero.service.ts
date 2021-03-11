@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
 
-import { Hero } from './hero';
+import { Hero, HeroTeam } from './hero';
 import { MessageService } from './message.service';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -20,7 +20,7 @@ export class HeroService {
 
   private heroesUrl = 'https://localhost:44385/api/hero';  // URL to web api
   private teamsURl = 'https://localhost:44385/api/team'; // URL to web api 
-
+  private heroTeamUrl = '  https://localhost:44385/api/team'; // URL to web api 
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -139,8 +139,6 @@ export class HeroService {
     )
   }
 
-
-
   getTeams(): Observable<Team[]> {
     return this.http.get<Team[]>(this.teamsURl)
       .pipe(
@@ -179,5 +177,21 @@ export class HeroService {
       catchError(this.handleError<Team>('deleteTeam'))
     );
   }
+  /*
+  getHeroes(): Observable<Hero[]> {
+    return this.http.get<Hero[]>(this.heroesUrl)
+      .pipe(
+        tap(_ => this.log('fetched heroes')),
+        catchError(this.handleError<Hero[]>('getHeroes', []))
+      );
+  }
+  */
 
+  getHeroesThatTeam(id_team: number): Observable<Hero[]> {
+    const url = `${this.heroTeamUrl}/${id_team}/heroes`;
+    return this.http.get<Hero[]>(url).pipe(
+      tap(_ => this.log(`fetched hero in this team id=${id_team}`)),
+      catchError(this.handleError<Hero[]>(`getHeroesThatTeam id=${id_team}`))
+    )
+  }
 }
