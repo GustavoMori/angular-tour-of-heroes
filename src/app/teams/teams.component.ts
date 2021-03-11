@@ -1,36 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Hero } from '../hero';
+import { Team } from '../team';
 import { HeroService } from '../hero.service';
 
 @Component({
-  selector: 'app-heroes',
-  templateUrl: './heroes.component.html',
-  styleUrls: ['./heroes.component.css']
+  selector: 'app-teams',
+  templateUrl: './teams.component.html',
+  styleUrls: ['./teams.component.css']
 })
-
-export class HeroesComponent implements OnInit {
-  heroes: Hero[] = [];
+export class TeamsComponent implements OnInit {
+  teams: Team[] = [];
   errorMessage!: string;
 
   constructor(private heroService: HeroService) { }
 
   ngOnInit() {
-    this.getHeroes();
+    this.getTeams();
   }
 
-  getHeroes(): void {
-    this.heroService.getHeroes()
-    .subscribe(heroes => this.heroes = heroes);
+  getTeams(): void {
+    this.heroService.getTeams()
+    .subscribe(teams => this.teams = teams);
   };
 
   add(name: string): any {
 
     name = name.trim();
     if (!name) { return; }
-    this.heroService.addHero({ name } as Hero)
-      .subscribe(hero => {
-        this.heroes.push(hero as Hero);
+    this.heroService.addTeam({ name } as Team)
+      .subscribe(team => {
+        this.teams.push(team as Team);
       },
       err => {
         if ((err.status) == 409) {

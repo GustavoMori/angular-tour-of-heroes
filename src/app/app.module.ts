@@ -15,6 +15,9 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { PowerfullComponent } from './powerfull/powerfull.component';
+import { TeamSearchComponent } from './team-search/team-search.component';
+import { TeamDetailComponent } from './team-detail/team-detail.component';
+import { TeamsComponent } from './teams/teams.component';
 
 @NgModule({
   imports: [
@@ -32,7 +35,10 @@ import { PowerfullComponent } from './powerfull/powerfull.component';
     HeroDetailComponent,
     MessagesComponent,
     HeroSearchComponent,
-    PowerfullComponent
+    PowerfullComponent,
+    TeamSearchComponent,
+    TeamDetailComponent,
+    TeamsComponent
   ],
   bootstrap: [ AppComponent ]
 })

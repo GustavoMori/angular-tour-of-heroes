@@ -3,11 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { Hero } from './hero';
-import { HEROES } from './mock-heroes';
 import { MessageService } from './message.service';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
-
+import { Team } from './team';
 
 @Injectable({ providedIn: 'root' })
 export class HeroService {
@@ -20,7 +19,8 @@ export class HeroService {
   }
 
   private heroesUrl = 'https://localhost:44385/api/hero';  // URL to web api
- 
+  private teamsURl = 'https://localhost:44385/api/team'; // URL to web api 
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -125,4 +125,59 @@ export class HeroService {
       catchError(this.handleError<Hero[]>('searchHeroes', []))
     );
   }
+  /* GET teams whose name contains search term */
+  searchTeams(term: string): Observable<Team[]>{
+    if (!term.trim()) {
+      // if not search term, return empty team array.
+      return of([]);
+    }
+    return this.http.get<Team[]>(`${this.teamsURl}/?name=${term}`).pipe(
+      tap(x => x.length?
+        this.log(`found teams matching "${term}"`):
+        this.log(`no teams matching "${term}"`)),
+      catchError(this.handleError<Team[]>('searchTeams', []))
+    )
+  }
+
+
+
+  getTeams(): Observable<Team[]> {
+    return this.http.get<Team[]>(this.teamsURl)
+      .pipe(
+        tap(_ => this.log('fetched teams')),
+        catchError(this.handleError<Team[]>('getTeams', []))
+      );
+  }
+  // Estou deixando add times com mesmo nome
+  addTeam(team: Team): Observable<Team | HttpErrorResponse> {
+    return this.http.post<Team>(this.teamsURl, team, this.httpOptions).pipe(
+      tap((newTeam: Team) => this.log(`added team w/ id=${newTeam.id_team}`)),
+      // catchError(this.handleError<Hero>('addHero'))
+    );
+  }
+
+  getTeam(id: any): Observable<Team> {
+    const novoId = +id;
+    const url = `${this.teamsURl}/${novoId}`;
+    return this.http.get<Team>(url).pipe(
+      tap(_ => this.log(`fetched team id=${novoId}`)),
+      catchError(this.handleError<Team>(`getHero id=${novoId}`))
+    );
+  }
+  updateTeam(team: Team | undefined): Observable<any> {
+    return this.http.put(this.teamsURl + "/" + team?.id_team, team, this.httpOptions).pipe(
+      tap(_ => this.log(`updated team id=${team?.id_team}`)),
+      catchError(this.handleError<any>('updateTeam'))
+    );
+  }
+  deleteTeam(team: Team | number): Observable<Team> {
+    const id = typeof team === 'number' ? team : team.id_team;
+    const url = `${this.teamsURl}/${id}`;
+
+    return this.http.delete<Team>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`deleted team id=${id}`)),
+      catchError(this.handleError<Team>('deleteTeam'))
+    );
+  }
+
 }

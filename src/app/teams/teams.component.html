@@ -1,0 +1,21 @@
+<h2>My Teams</h2>
+<ul class="teams">
+  <li *ngFor="let team of teams">
+    <a routerLink="/team/{{team.id_team}}">
+      <span class="badge">{{team.id_team}}</span> {{team.name}}
+    </a>
+  </li>
+</ul>
+<div>
+  <label id="new-team">Team name: </label>
+  <input for="new-team" #teamName />
+
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button class="add-button" (click)="add(teamName.value); teamName.value=''">
+    Add team
+  </button>
+
+  <div *ngIf="errorMessage">
+    {{errorMessage}}
+  </div>
+</div>

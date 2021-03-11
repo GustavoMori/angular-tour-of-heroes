@@ -1,0 +1,22 @@
+
+<div *ngIf="team">
+    <h2>{{team.name | uppercase}} Details</h2>
+    <div><span>id: </span>{{team.id_team}}</div>
+  
+    <div>
+      <label for="team-name">Team name: </label>
+      <input id="team-name" [(ngModel)]="team.name" placeholder="Team name"/>
+    </div>
+    <!-- Mostrar todos herois que estão nesse time  -->
+    
+    <!--<div class="heroes-menu">
+            <a *ngFor="let hero of heroes"
+                routerLink="/detail/{{hero.id}}">
+                {{hero.name}}
+                </a>
+        </div> -->
+    <button (click)="goBack()">go back</button>
+    <button (click)="saveTeam()">save</button>
+    <button class="delete" title="delete team"
+    (click)="deleteTeam(team)">delete</button>
+  </div>
