@@ -11,6 +11,7 @@ import { HeroService } from '../hero.service';
 
 export class HeroesComponent implements OnInit {
   heroes: Hero[] = [];
+  errorMessage!: string;
 
   constructor(private heroService: HeroService) { }
 
@@ -23,13 +24,30 @@ export class HeroesComponent implements OnInit {
     .subscribe(heroes => this.heroes = heroes);
   };
 
-  add(name: string): void {
-    name = name.trim();
-    if (!name) { return; }
-    this.heroService.addHero({ name } as Hero)
-      .subscribe(hero => {
-        this.heroes.push(hero);
-      });
+  add(name: string): any {
+    // const testNameExist = this.heroes.find(hero => hero.name.toUpperCase === name.toUpperCase)
+    
+    // if (testNameExist) {
+    //   this.errorMessage = 'Esse nome de herói já existe';
+    //   return this.errorMessage ;
+    // }
+
+    // else {
+      name = name.trim();
+      if (!name) { return; }
+      this.heroService.addHero({ name } as Hero)
+        .subscribe(hero => {
+          this.heroes.push(hero as Hero);
+        },
+        err => {
+          if ((err.status) == 409) {
+            alert("That name is already in use")
+          }
+        }
+        );
+    // }
+
+
   }
   /*
   delete(hero: Hero): void {

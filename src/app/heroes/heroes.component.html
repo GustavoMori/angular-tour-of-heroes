@@ -18,4 +18,16 @@
   <button class="add-button" (click)="add(heroName.value); heroName.value=''">
     Add hero
   </button>
+
+  <div *ngIf="errorMessage">
+    {{errorMessage}}
+  </div>
 </div>
+
+
+
+  <!-- <ng-template #EmptyTemplate>
+    <div *ngIf="erro">
+  nao passei
+  </div>
+  </ng-template> -->

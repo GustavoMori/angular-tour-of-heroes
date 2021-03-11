@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { Hero } from './hero';
 import { HEROES } from './mock-heroes';
 import { MessageService } from './message.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
 
@@ -95,10 +95,10 @@ export class HeroService {
   }
   
   /** POST: add a new hero to the server */
-  addHero(hero: Hero): Observable<Hero> {
+  addHero(hero: Hero): Observable<Hero | HttpErrorResponse> {
     return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions).pipe(
       tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
-      catchError(this.handleError<Hero>('addHero'))
+      // catchError(this.handleError<Hero>('addHero'))
     );
   }
 
