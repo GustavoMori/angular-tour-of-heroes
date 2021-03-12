@@ -125,7 +125,8 @@ export class HeroService {
       catchError(this.handleError<Hero[]>('searchHeroes', []))
     );
   }
-  /* GET teams whose name contains search term */
+
+  /* TEAMS */
   searchTeams(term: string): Observable<Team[]>{
     if (!term.trim()) {
       // if not search term, return empty team array.
@@ -177,16 +178,7 @@ export class HeroService {
       catchError(this.handleError<Team>('deleteTeam'))
     );
   }
-  /*
-  getHeroes(): Observable<Hero[]> {
-    return this.http.get<Hero[]>(this.heroesUrl)
-      .pipe(
-        tap(_ => this.log('fetched heroes')),
-        catchError(this.handleError<Hero[]>('getHeroes', []))
-      );
-  }
-  */
-
+  /* HEROES AND TEAMS*/
   getHeroesThatTeam(id_team: number): Observable<Hero[]> {
     const url = `${this.heroTeamUrl}/${id_team}/heroes`;
     return this.http.get<Hero[]>(url).pipe(
@@ -194,4 +186,35 @@ export class HeroService {
       catchError(this.handleError<Hero[]>(`getHeroesThatTeam id=${id_team}`))
     )
   }
+
+  getTeamsthatHeroes(id: number): Observable<Team[]> {
+    const url = `${this.heroTeamUrl}/${id}/teams`;
+    return this.http.get<Team[]>(url).pipe(
+      tap(_ => this.log(`fetched team in this hero id=${id}`)),
+      catchError(this.handleError<Team[]>(`getTeamsthatHeroes id=${id}`))
+    )
+  }
+
+  heroInNewTeam(id: number, id_team: number): Observable<null>{
+    const url = `${this.heroTeamUrl}/relationship`;
+    return this.http.post<null>(url, {hero_idfk: id, team_idfk: id_team}).pipe(
+      tap(_ => this.log(`fetched team in this hero id=${id}`)),
+      catchError(this.handleError<null>(`heroInNewTeam id=${id}`))
+    )
+  }
+
+  kickHero(id: number, id_team: number ): Observable<null>{
+    const url = `${this.heroTeamUrl}/relationship/kick`;
+    return this.http.post<null>(url, {hero_idfk: id, team_idfk: id_team}).pipe(
+      tap(_ => this.log(`fetched hero id=${id}was kicked`)),
+      catchError(this.handleError<null>(`kickHero id=${id}`))
+    )
+  }
+
+  // addTeam(team: Team): Observable<Team | HttpErrorResponse> {
+  //   return this.http.post<Team>(this.teamsURl, team, this.httpOptions).pipe(
+  //     tap((newTeam: Team) => this.log(`added team w/ id=${newTeam.id_team}`)),
+  //     // catchError(this.handleError<Hero>('addHero'))
+  //   );
+  // }
 }

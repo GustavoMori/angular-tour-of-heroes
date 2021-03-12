@@ -22,7 +22,6 @@ export class TeamDetailComponent implements OnInit {
   hero: Hero | undefined;
   heroTeam: HeroTeam | undefined;
 
-
   constructor(
     private route: ActivatedRoute,
     private heroService: HeroService,
@@ -46,8 +45,8 @@ export class TeamDetailComponent implements OnInit {
     const id = (this.team?.id_team as number);
     this.heroService.getHeroesThatTeam(id)
     .subscribe(heroes => this.heroes = heroes);
-    console.log(this.heroes)
   };
+  
   saveTeam(): void {
     this.heroService.updateTeam(this.team)
       .subscribe(() => this.goBack());
@@ -60,5 +59,13 @@ export class TeamDetailComponent implements OnInit {
   deleteTeam(team: Team): void {
     this.teams = this.teams.filter(h => h !== team);
     this.heroService.deleteTeam(team).subscribe();
+  }
+
+  kickHero(id: number): void{
+    // const id = (this.hero?.id as number);
+    const id_team = (this.team?.id_team as number);
+    this.heroService.kickHero(id, id_team)
+      .subscribe();
+      // .subscribe(heroes => this.heroes.filter( ));
   }
 }
